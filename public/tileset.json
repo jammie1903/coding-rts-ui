@@ -1,0 +1,119 @@
+{
+    "meta": {
+        "image": "./tileset-bigger.png"
+    },
+    "frames": {
+        "top-left-corner.png": {
+            "frame": {"x":0,"y":0,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "top.png": {
+            "frame": {"x":32,"y":0,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "top-right-corner.png": {
+            "frame": {"x":64,"y":0,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "left.png": {
+            "frame": {"x":0,"y":32,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "whole.png": {
+            "frame": {"x":32,"y":32 ,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "right.png": {
+            "frame": {"x":64,"y":32,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "bottom-left-corner.png": {
+            "frame": {"x":0,"y":64,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "bottom.png": {
+            "frame": {"x":32,"y":64,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "bottom-right-corner.png": {
+            "frame": {"x":64,"y":64,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "bottom-right-inner-corner.png":{
+            "frame": {"x":96,"y":0,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "bottom-left-inner-corner.png": {
+            "frame": {"x":128,"y":0,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "top-right-inner-corner.png": {
+            "frame": {"x":96,"y":32,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "top-left-inner-corner.png": {
+            "frame": {"x":128,"y":32,"w":32,"h":32},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+            "sourceSize": {"w":32,"h":32},
+            "pivot": {"x":0.5,"y":0.5}
+        },
+        "room-link.png": {
+            "frame": {"x":97,"y":65,"w":30,"h":30},
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
+            "sourceSize": {"w":30,"h":30},
+            "pivot": {"x":0.5,"y":0.5}
+        }
+    }
+}
