@@ -3,6 +3,9 @@ import * as PIXI from "pixi.js";
 import request from 'superagent'
 import "./Renderer.css";
 
+import stream from "../stream";
+import GameObjectContainer from './gameObjectContainer';
+
 class Renderer extends Component {
 
     constructor() {
@@ -10,6 +13,12 @@ class Renderer extends Component {
         this.id = new Date().getTime();
         this.app = new PIXI.Application({ width: 1200, height: 800 });
 
+        stream.addListener({
+            onAllObjectsRemoved: () => console.log("onAllObjectsRemoved"),
+            onObjectRemoved: (a) => console.log("onObjectRemoved", a),
+            onObjectAdded: (a, b) => console.log("onObjectAdded", a, b),
+            onObjectUpdated: (a, b) => console.log("onObjectUpdated", a, b)
+        });
 
         this.map = [];
         this.width = 20;
@@ -24,6 +33,7 @@ class Renderer extends Component {
     }
 
     componentDidMount() {
+        stream.connect();
         document.getElementById("renderer-" + this.id).appendChild(this.app.view);
         const imagePromise = new Promise((res, rej) => {
             PIXI.loader.add("tileset.json")
@@ -113,12 +123,19 @@ class Renderer extends Component {
     }
 
     setup(refresh) {
+        stream.room = this.room;
         if (refresh) {
-            this.container.removeChildren();
+            this.mapContainer.removeChildren();
             this.uiContainer.removeChildren();
         } else {
             this.container = new PIXI.Container();
+            this.mapContainer = new PIXI.Container();
+            this.gameObjectContainer = new GameObjectContainer();
+            this.container.addChild(this.mapContainer);
+            this.container.addChild(this.gameObjectContainer.container);
             this.uiContainer = new PIXI.Container();
+
+            stream.addListener(this.gameObjectContainer);
             this.app.stage.addChild(this.container);
             this.app.stage.addChild(this.uiContainer);
             PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -143,7 +160,7 @@ class Renderer extends Component {
             this.width * 64,
             this.height * 64
         );
-        this.container.addChild(tilingSprite);
+        this.mapContainer.addChild(tilingSprite);
 
         const roomPosition = new PIXI.Text(this.room.x + ", " + this.room.y);
         roomPosition.x = 20;
@@ -156,7 +173,7 @@ class Renderer extends Component {
                 const linkSprite = this.getSprite("room-link.png");
                 linkSprite.position.set((index % this.width) * 64 + 1, Math.floor(index / this.width) * 64 + 1)
                 linkSprite.scale.set(2, 2);
-                this.container.addChild(linkSprite);
+                this.mapContainer.addChild(linkSprite);
                 linkSprite.interactive = true;
                 linkSprite.buttonMode = true;
                 linkSprite.on('pointerdown', () => this.changeRoom(cell.link));
@@ -188,10 +205,10 @@ class Renderer extends Component {
             bottomLeftSprite.position.set((index % this.width) * 64, Math.floor(index / this.width) * 64 + 32)
             const bottomRightSprite = this.getSprite(this.getSpriteName("bottom", "right", bottom, right, bottomRight));
             bottomRightSprite.position.set((index % this.width) * 64 + 32, Math.floor(index / this.width) * 64 + 32)
-            this.container.addChild(topLeftSprite);
-            this.container.addChild(topRightSprite);
-            this.container.addChild(bottomLeftSprite);
-            this.container.addChild(bottomRightSprite);
+            this.mapContainer.addChild(topLeftSprite);
+            this.mapContainer.addChild(topRightSprite);
+            this.mapContainer.addChild(bottomLeftSprite);
+            this.mapContainer.addChild(bottomRightSprite);
         });
     }
 }
