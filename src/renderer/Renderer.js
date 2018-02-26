@@ -4,7 +4,7 @@ import request from 'superagent'
 import "./Renderer.css";
 
 import stream from "../stream";
-import GameObjectContainer from './gameObjectContainer';
+import GameObjectContainer from './GameObjectContainer';
 
 class Renderer extends Component {
 
@@ -41,11 +41,25 @@ class Renderer extends Component {
                 .load(() => res());
         });
         const _this = this;
-        const mapPromise = new Promise((res, rej) => {
+
+        const roomPromise = new Promise((res, rej) => {
+            request
+                .get('http://localhost:3000/map/room/main')
+                .set('content-type', 'application-json')
+                .set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0MSIsImlhdCI6MTUxODEwMzAxOH0.uIbYP1DbVSoFA1EF7JXp84ZNMoZsHMvS8C85tqW8aKE')
+                .end((err, resp) => {
+                    if (!err) {
+                        _this.room = resp.body.data;
+                    }
+                    res();
+                });
+        });
+
+        const mapPromise = roomPromise.then(() => new Promise((res, rej) => {
             request
                 .get('http://localhost:3000/map/room')
-                .query({ x: this.room.y })
-                .query({ y: this.room.x })
+                .query({ x: this.room.x })
+                .query({ y: this.room.y })
                 .set('content-type', 'application-json')
                 .set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0MSIsImlhdCI6MTUxODEwMzAxOH0.uIbYP1DbVSoFA1EF7JXp84ZNMoZsHMvS8C85tqW8aKE')
                 .end((err, resp) => {
@@ -55,8 +69,8 @@ class Renderer extends Component {
                     } else {
                         rej(err);
                     }
-                })
-        });
+                });
+        }));
 
         Promise.all([imagePromise, mapPromise])
             .then(() => this.setup())

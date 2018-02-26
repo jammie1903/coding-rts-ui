@@ -42,8 +42,10 @@ export default class StreamListener {
                 this.objectRecords[o] = this.stream.record.getRecord(`gameobject/${o}`);
                 let firstUpdate = true;
                 this.objectRecords[o].subscribe('value', (update) => {
-                    this.listeners.forEach((listener) => firstUpdate ? listener.onObjectAdded(o, update) : listener.onObjectUpdated(o, update));
-                    firstUpdate = false;
+                    if (update) {
+                        this.listeners.forEach((listener) => firstUpdate ? listener.onObjectAdded(o, update) : listener.onObjectUpdated(o, update));
+                        firstUpdate = false;
+                    }
                 }, true);
             }
         });

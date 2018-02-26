@@ -14,10 +14,22 @@ export default class GameObjectContainer {
     constructor() {
         this.spriteMap = {};
         this.container = new PIXI.Container();
+
+        this.textStyle = new PIXI.TextStyle({
+            fontSize: 12,
+            fontWeight: 'bold',
+            fill: '#ffffff',
+            dropShadow: true,
+            dropShadowColor: '#000000',
+            dropShadowBlur: 4,
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 2,
+        });
+        
     }
 
     onUpdated() {
-        if(this.handler) this.handler();
+        if (this.handler) this.handler();
     }
 
     setOnUpdated(handler) {
@@ -25,15 +37,35 @@ export default class GameObjectContainer {
     }
 
     getSprite(data) {
-        const circle = new PIXI.Graphics();
-        console.log("here");
-        circle.lineStyle(2, 0x000, 1);
-        circle.beginFill(data.color, 0.5);
-        circle.drawCircle(32, 32, 24);
-        circle.endFill();
-       
         const container = new PIXI.Container();
-        container.addChild(circle);
+        let textWidth = PIXI.TextMetrics.measureText(data.name, this.textStyle).width;
+        const nameText = new PIXI.Text(data.name, this.textStyle);
+        if(textWidth > 64) {
+            nameText.width = 64;
+            textWidth = 64;
+        }
+        nameText.x = 32 - (textWidth/2);
+
+        if (data.type === "structure") {
+            nameText.y = -6;
+            const rect = new PIXI.Graphics();
+            rect.lineStyle(2, 0x000, 1);
+            rect.beginFill(data.color, 1);
+            rect.drawRoundedRect(12, 12, 40, 40, 8);
+            rect.endFill();
+            container.addChild(rect);
+        } else {
+            nameText.y = -2;
+            const circle = new PIXI.Graphics();
+            circle.lineStyle(2, 0x000, 1);
+            circle.beginFill(data.color, 1);
+            circle.drawCircle(32, 32, 16);
+            circle.endFill();
+            container.addChild(circle);
+        }
+        container.addChild(nameText);
+
+
         container.position.set(data.tile.x * 64, data.tile.y * 64);
         return container;
     }
