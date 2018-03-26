@@ -1,0 +1,16 @@
+.editor-pane {
+    max-height: 300px;
+    height: 300px;
+    display: flex;
+}
+
+.editor-pane > ul {
+    width: 300px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.editor-pane .ace_editor {
+    overflow-y: auto;
+    max-height: 100%;
+}

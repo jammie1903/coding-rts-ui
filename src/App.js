@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Renderer from "./renderer/Renderer";
+import Editor from "./editor/Editor";
 
 class App extends Component {
 
@@ -15,6 +16,7 @@ class App extends Component {
 
         <Renderer />
 
+        <Editor />
       </div>
     );
   }

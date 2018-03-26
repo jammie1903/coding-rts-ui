@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as PIXI from "pixi.js";
 import request from 'superagent'
+import Measure from 'react-measure'
+import debounce from "../utils/debounce";
 import "./Renderer.css";
 
 import stream from "../stream";
@@ -11,8 +13,8 @@ class Renderer extends Component {
     constructor() {
         super();
         this.id = new Date().getTime();
-        this.app = new PIXI.Application({ width: 1200, height: 800 });
-
+        this.app = new PIXI.Application({ width: 400, height: 400 });
+        
         stream.addListener({
             onAllObjectsRemoved: () => console.log("onAllObjectsRemoved"),
             onObjectRemoved: (a) => console.log("onObjectRemoved", a),
@@ -24,11 +26,22 @@ class Renderer extends Component {
         this.width = 20;
         this.height = 20;
         this.room = { x: 0, y: 0 };
+
+        this.updateRendererSize = debounce((param) => {
+            console.log(param);
+            this.app.renderer.resize(param.bounds.width - 20, param.bounds.height - 20);
+        }, 300);
     }
 
     render() {
         return (
-            <div className="Renderer" id={"renderer-" + this.id} />
+            <Measure bounds onResize={contentRect => {
+                this.updateRendererSize(contentRect);
+            }}>
+                {({ measureRef }) =>
+                    <div ref={measureRef} className="Renderer" id={"renderer-" + this.id} />
+                }
+            </Measure>
         );
     }
 
@@ -48,7 +61,7 @@ class Renderer extends Component {
                 .set('content-type', 'application-json')
                 .set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0MSIsImlhdCI6MTUxODEwMzAxOH0.uIbYP1DbVSoFA1EF7JXp84ZNMoZsHMvS8C85tqW8aKE')
                 .end((err, resp) => {
-                    if (!err) {
+                    if (!err && resp.body) {
                         _this.room = resp.body.data;
                     }
                     res();
@@ -63,7 +76,7 @@ class Renderer extends Component {
                 .set('content-type', 'application-json')
                 .set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0MSIsImlhdCI6MTUxODEwMzAxOH0.uIbYP1DbVSoFA1EF7JXp84ZNMoZsHMvS8C85tqW8aKE')
                 .end((err, resp) => {
-                    if (!err) {
+                    if (!err && resp.body) {
                         _this.map = resp.body.data;
                         res();
                     } else {
