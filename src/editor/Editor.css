@@ -10,7 +10,25 @@
     height: 100%;
 }
 
-.editor-pane .ace_editor {
+.editor-pane .editor {
     overflow-y: auto;
     max-height: 100%;
+    width: 100%;
+}
+
+.toolbar {
+    padding: 5px;
+    background-color: rgb(33, 37, 43);
+}
+
+.toolbar a {
+    color: white;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.right {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
 }

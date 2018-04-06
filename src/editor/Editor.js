@@ -3,9 +3,10 @@ import 'brace';
 import AceEditor from 'react-ace';
 import { Treebeard, decorators } from 'react-treebeard';
 import "./Editor.css";
-import { getFiles, getFile } from "../utils/api";
+import { getFiles, getFile, saveFile } from "../utils/api";
 import { EditSession } from "brace";
-
+import FaFloppy from 'react-icons/lib/fa/floppy-o';
+import FaRefresh from 'react-icons/lib/fa/refresh';
 
 import 'brace/mode/javascript';
 import 'brace/theme/monokai';
@@ -35,7 +36,9 @@ class Editor extends Component {
         this.state = {
             fileData: {}
         };
+        this.openFile = null;
         this.sessions = {};
+        this.emptySession = new EditSession("", "ace/mode/javascript")
 
         getFiles().then(files => {
             this.setState({ fileData: files });
@@ -51,20 +54,48 @@ class Editor extends Component {
         node.active = true;
         if (node.children) {
             node.toggled = toggled;
-        } else if (node.type === "file") {
-            const editor = this.refs.aceEditor.editor;
+
+        }
+        const editor = this.refs.aceEditor.editor;
+
+        const previousSession = editor.getSession();
+
+        editor.setSession(this.emptySession);
+        this.setState({ cursor: node });
+
+        if (node.type === "file") {
             if (this.sessions[node.path]) {
-                editor.setSession(this.sessions[node.path]);
+                setTimeout(() => {
+                    editor.setSession(this.sessions[node.path]);
+                    this.openFile = node.path;
+                });
             } else {
                 getFile(node.path).then(content => {
-                    this.sessions[node.path] = new EditSession(content, 'ace/mode/javascript');
-                    debugger;
+                    this.sessions[node.path] = new EditSession(content, "ace/mode/javascript");
                     editor.setSession(this.sessions[node.path]);
+                    this.openFile = node.path;
                 });
             }
+        } else {
+            setTimeout(() => editor.setSession(previousSession));
         }
 
-        this.setState({ cursor: node });
+    }
+
+    save() {
+        if(this.openFile) {
+            const editor = this.refs.aceEditor.editor;
+            const content = editor.getSession().getValue();
+            saveFile(this.openFile, content);
+        }
+    }
+
+    reload() {
+        if(this.openFile) {
+            getFile(this.openFile).then(content => {
+                this.sessions[this.openFile].setValue(content);
+            });
+        }
     }
 
     render() {
@@ -73,23 +104,31 @@ class Editor extends Component {
                 <Treebeard
                     data={this.state.fileData}
                     onToggle={this.onToggle} />
-                <AceEditor
-                    ref="aceEditor"
-                    mode="javascript"
-                    theme="monokai"
-                    name={"editor" + this.id}
-                    showPrintMargin={false}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    width="100%"
-                    setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: false,
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
-                />
+                <div className="editor">
+                    <div className="toolbar">
+                        <span className="right"> 
+                            <a onClick={() => this.save()}><FaFloppy></FaFloppy></a>
+                            <a onClick={() => this.reload()}><FaRefresh></FaRefresh></a>
+                        </span>
+                    </div>
+                    <AceEditor
+                        ref="aceEditor"
+                        mode="javascript"
+                        theme="monokai"
+                        name={"editor" + this.id}
+                        showPrintMargin={false}
+                        showGutter={true}
+                        highlightActiveLine={true}
+                        width="100%"
+                        setOptions={{
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: true,
+                            enableSnippets: false,
+                            showLineNumbers: true,
+                            tabSize: 2,
+                        }}
+                    />
+                </div>
             </div>
         );
     }
