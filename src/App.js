@@ -3,7 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import Renderer from "./renderer/Renderer";
 import Editor from "./editor/Editor";
-
+import ReactModal from "react-modal";
+ReactModal.setAppElement('#root');
 class App extends Component {
 
   render() {

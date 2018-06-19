@@ -4,10 +4,78 @@
     display: flex;
 }
 
-.editor-pane > ul {
+.editor-pane > .lhs {
     width: 300px;
     overflow-y: auto;
     height: 100%;
+    background-color: rgb(33, 37, 43);
+}
+
+.editor-pane > .lhs .rc-menu {
+    background-color: rgb(33, 37, 43);
+    margin: 0;
+}
+
+.rc-menu * {
+    cursor: pointer;
+}
+
+.lhs .rc-menu {
+    border: none;
+}
+
+.Modal {
+    position: absolute;
+    top: calc(50% - 100px);
+    left: 40px;
+    right: 40px;
+    background-color: papayawhip;
+    padding: 00px;
+    border: 2px solid #333333;
+    border-radius: 10px;
+}
+
+.Modal .modal-title {
+    padding: 0 20px;
+    border-bottom: 2px solid #333333;
+}
+
+.Modal .modal-content {
+    padding: 20px;
+}
+
+.Overlay {
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.lhs .rc-menu .rc-menu-submenu .rc-menu-submenu-title {
+    background-color: rgb(33, 37, 43);
+    padding: 7px 15px 3px 15px;
+}
+
+.lhs .rc-menu .rc-menu-submenu.rc-menu-submenu-active {
+    background-color: rgb(33, 37, 43);
+    margin-bottom: -2px;
+}
+
+
+.rc-menu.rc-menu-horizontal > .rc-menu-submenu:not(.rc-menu-submenu-active) {
+    background-color: rgb(33, 37, 43);
+    border-bottom: none;
+}
+
+.rc-menu .rc-menu-item {
+    background-color: rgb(33, 37, 43);
+}
+
+.rc-menu .rc-menu-item.rc-menu-item-active {
+    background-color: rgb(36, 41, 47);
 }
 
 .editor-pane .editor {
@@ -19,6 +87,13 @@
 .toolbar {
     padding: 5px;
     background-color: rgb(33, 37, 43);
+    display: inline-flex;
+    width: calc(100% - 10px);
+    color: rgb(157, 165, 171);
+}
+
+.toolbar .openFile {
+    font-weight: 600;
 }
 
 .toolbar a {
